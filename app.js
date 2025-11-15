@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // Core Module
 const path = require('path');
 
@@ -7,7 +9,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const { default: mongoose } = require('mongoose');
 const multer = require('multer');
-const DB_PATH = "mongodb+srv://****:***@stayhub.zajasqe.mongodb.net/airbnb?retryWrites=true&w=majority&appName=StayHub";
+const DB_PATH = process.env.DB_PATH;
 
 //Local Module
 const storeRouter = require("./routes/storeRouter")
@@ -64,7 +66,7 @@ app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')))
 app.use("/homes/uploads", express.static(path.join(rootDir, 'uploads')))
 
 app.use(session({
-  secret: "KnowledgeGate AI with Complete Coding",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   store
@@ -88,7 +90,7 @@ app.use("/host", hostRouter);
 
 app.use(errorsController.pageNotFound);
 
-const PORT = 3003;
+const PORT = process.env.PORT || 3003;
 
 mongoose.connect(DB_PATH).then(() => {
   console.log('Connected to Mongo');
